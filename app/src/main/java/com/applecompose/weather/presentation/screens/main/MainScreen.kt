@@ -1,24 +1,26 @@
 package com.applecompose.weather.presentation.screens.main
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.applecompose.weather.data.DataOrException
 import com.applecompose.weather.data.model.Weather
 import com.applecompose.weather.presentation.components.WeatherAppBar
+import com.applecompose.weather.presentation.components.WeatherStateImage
+import com.applecompose.weather.presentation.utils.formatDate
+import com.applecompose.weather.presentation.utils.formatDecimals
 
 @Composable
 fun MainScreen(
@@ -62,12 +64,13 @@ fun MainScaffold(
 		MainContent(data = weather)
 
 	}
-
-
 }
 
 @Composable
 fun MainContent(data: Weather) {
+	val weatherItem = data.list[0]
+	val imageUrl = "https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png"
+
 	Surface(
 		modifier = Modifier
 			.fillMaxSize(),
@@ -86,24 +89,30 @@ fun MainContent(data: Weather) {
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
 				Text(text = "Weather App")
-				Text(text = "Nov 29")
+				Text(text = formatDate(weatherItem.dt))
 			}
 			Spacer(modifier = Modifier.height(20.dp))
-
 			Row(
 				modifier = Modifier
 					.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceEvenly
 			) {
 				Text(
-					text = "66",
-					fontSize = 48.sp
+					text = formatDecimals(weatherItem.main.temp) + "°",
+					style = MaterialTheme.typography.h3,
+					fontWeight = FontWeight.ExtraBold,
+					fontFamily = FontFamily.Monospace,
+					modifier = Modifier
+						.padding(top = 16.dp)
 				)
-				Text(
-					text = "picture",
-					fontSize = 48.sp
-					)
-
+				WeatherStateImage(imageUrl = imageUrl)
+			}
+			Row(
+				modifier = Modifier
+					.fillMaxWidth(),
+				horizontalArrangement = Arrangement.Center
+			) {
+				Text(text = weatherItem.weather[0].description)
 			}
 			Column(
 				modifier = Modifier
@@ -115,25 +124,25 @@ fun MainContent(data: Weather) {
 					modifier = Modifier
 						.fillMaxWidth()
 						.padding(start = 12.dp, end = 12.dp),
-				horizontalArrangement = Arrangement.SpaceBetween
+					horizontalArrangement = Arrangement.SpaceBetween
 				) {
-					Text(text = "feels like")
-					Text(text = "Hi 85 | Lo 60")
+					Text(text = "Feels Like:${formatDecimals(weatherItem.main.feels_like)}" + "°")
+					Text(
+						text = "" +
+								"Hi ${formatDecimals(weatherItem.main.temp_max)}" + "° | " +
+								"Lo ${formatDecimals(weatherItem.main.temp_min)}" + "°"
+					)
 				}
-
-
 			}
 			Divider(
 				color = MaterialTheme.colors.secondary,
 				thickness = 2.dp
 			)
-
-
-
-
-
+			Text(text = "Where am I")
 		}
+
 	}
-
-
 }
+
+
+
