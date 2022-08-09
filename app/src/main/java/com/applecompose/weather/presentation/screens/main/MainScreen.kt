@@ -1,25 +1,36 @@
 package com.applecompose.weather.presentation.screens.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.applecompose.weather.R
 import com.applecompose.weather.data.DataOrException
 import com.applecompose.weather.data.model.Weather
 import com.applecompose.weather.data.model.WeatherItem
+import com.applecompose.weather.presentation.components.HumidityWindPressureRow
 import com.applecompose.weather.presentation.components.WeatherAppBar
 import com.applecompose.weather.presentation.components.WeatherStateImage
+import com.applecompose.weather.presentation.components.WeatherStateImageSmall
 import com.applecompose.weather.presentation.utils.formatDate
+import com.applecompose.weather.presentation.utils.formatDateTime
 import com.applecompose.weather.presentation.utils.formatDecimals
 
 @Composable
@@ -132,6 +143,7 @@ fun MainContent(data: Weather) {
 								"Hi ${formatDecimals(weatherItem.main.temp_max)}" + "° | " +
 								"Lo ${formatDecimals(weatherItem.main.temp_min)}" + "°"
 					)
+
 				}
 			}
 			Spacer(modifier = Modifier.height(12.dp))
@@ -140,54 +152,100 @@ fun MainContent(data: Weather) {
 				color = MaterialTheme.colors.secondary,
 				thickness = 2.dp
 			)
-			Text(text = "Where am I")
-		}
 
+			Text(
+				text = "Daily Forecast",
+				style = MaterialTheme.typography.subtitle1,
+				fontWeight = FontWeight.Bold,
+				modifier = Modifier
+					.align(Alignment.CenterHorizontally)
+
+			)
+			Surface(
+				modifier = Modifier
+					.fillMaxWidth()
+					.fillMaxHeight()
+					.padding(12.dp)
+					.background(MaterialTheme.colors.primary),
+				shape = RoundedCornerShape(6.dp)
+			) {
+				LazyColumn(
+					modifier = Modifier
+						.padding(2.dp)
+						.background(MaterialTheme.colors.primary),
+					contentPadding = PaddingValues(1.dp)
+				){
+					items(items = data.list) { item: WeatherItem ->
+						WeatherDetailRow(weather = item)
+					}
+				}
+			}
+		}
 	}
 }
 
+
 @Composable
-fun HumidityWindPressureRow(weather: WeatherItem) {
-	Row(
-		modifier = Modifier
-			.padding(6.dp)
+fun WeatherDetailRow(weather: WeatherItem) {
+	val imageUrl = "https://openweathermap.org/img/wn/${weather.weather[0].icon}.png"
+	Surface(
+		Modifier
+			.padding(12.dp)
 			.fillMaxWidth(),
 
-		verticalAlignment = Alignment.CenterVertically,
-		horizontalArrangement = Arrangement.SpaceBetween
+		shape = RoundedCornerShape(16.dp),
+		color = Color.White,
+		elevation = 6.dp
 	) {
 		Row(
 			modifier = Modifier
-				.padding(4.dp)
+				.fillMaxWidth()
+				.background(Color.White),
+			verticalAlignment = Alignment.CenterVertically,
+			horizontalArrangement = Arrangement.SpaceBetween
 		) {
-			Icon(
-				painter = painterResource(id = R.drawable.humidity),
-				contentDescription = "Humidity icon",
-				modifier = Modifier
-					.size(20.dp)
+			Text(
+				formatDate(weather.dt)
+					.split(",")[0],
+				modifier = Modifier.padding(start = 5.dp)
+			)
+//			Text(
+//				formatDecimals(weather.dt_txt.toDouble())
+//				.split(" ")[1],
+//				modifier = Modifier.padding(start = 5.dp) )
+			WeatherStateImageSmall(imageUrl = imageUrl)
+			Surface(
+				modifier = Modifier.padding(0.dp),
+				shape = CircleShape,
+				color = Color.Transparent
+			) {
+				Text(
+					weather.weather[0].description,
+					modifier = Modifier.padding(4.dp),
+					style = MaterialTheme.typography.caption
 				)
-			Text(text = " ${weather.main.humidity}%")
-		}
-		Row() {
-			Icon(
-				painter = painterResource(id = R.drawable.wind),
-				contentDescription = "Wind icon",
-				modifier = Modifier
-					.size(20.dp)
-			)
-			Text(text = " ${weather.wind.speed}mph")
-		}
-		Row() {
-			Icon(
-				painter = painterResource(id = R.drawable.ic_arrow_outward),
-				contentDescription = "Wind direction icon",
-				modifier = Modifier
-					.size(20.dp)
-			)
-			Text(text = " ${weather.wind.deg} degree")
-		}
 
+			}
+			Text(text = buildAnnotatedString {
+				withStyle(
+					style = SpanStyle(
+						color = Color.Blue.copy(alpha = 0.7f),
+						fontWeight = FontWeight.SemiBold
+					)
+				) {
+					append(formatDecimals(weather.main.temp_max) + "º")
 
+				}
+				withStyle(
+					style = SpanStyle(
+						color = Color.LightGray
+					)
+				) {
+					append(formatDecimals(weather.main.temp_min) + "º")
+				}
+			})
+
+		}
 
 
 	}
