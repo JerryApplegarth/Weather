@@ -9,7 +9,9 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.applecompose.weather.navigation.navigation.Navigation
 import com.applecompose.weather.ui.theme.WeatherTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -17,7 +19,7 @@ class MainActivity : ComponentActivity() {
 			WeatherTheme {
 				Surface(
 					modifier = Modifier.fillMaxSize(),
-					color = MaterialTheme.colors.background
+					color = MaterialTheme.colors.primary
 				) {
 					Navigation()
 
