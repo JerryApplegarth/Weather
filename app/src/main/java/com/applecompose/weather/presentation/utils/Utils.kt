@@ -15,6 +15,12 @@ fun formatDateTime(timestamp: Int): String {
 
 	return sdf.format(date)
 }
+fun formatDateTimeTwo(timestamp: Int): String {
+	val sdf = SimpleDateFormat("hh")
+	val date = java.util.Date(timestamp.toLong() * 1000)
+
+	return sdf.format(date)
+}
 
 fun formatDecimals(item: Double): String {
 	return " %.0f".format(item)

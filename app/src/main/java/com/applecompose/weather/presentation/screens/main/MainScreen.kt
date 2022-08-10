@@ -31,6 +31,7 @@ import com.applecompose.weather.presentation.components.WeatherStateImage
 import com.applecompose.weather.presentation.components.WeatherStateImageSmall
 import com.applecompose.weather.presentation.utils.formatDate
 import com.applecompose.weather.presentation.utils.formatDateTime
+import com.applecompose.weather.presentation.utils.formatDateTimeTwo
 import com.applecompose.weather.presentation.utils.formatDecimals
 
 @Composable
@@ -143,7 +144,6 @@ fun MainContent(data: Weather) {
 								"Hi ${formatDecimals(weatherItem.main.temp_max)}" + "° | " +
 								"Lo ${formatDecimals(weatherItem.main.temp_min)}" + "°"
 					)
-
 				}
 			}
 			Spacer(modifier = Modifier.height(12.dp))
@@ -152,14 +152,12 @@ fun MainContent(data: Weather) {
 				color = MaterialTheme.colors.secondary,
 				thickness = 2.dp
 			)
-
 			Text(
 				text = "Daily Forecast",
 				style = MaterialTheme.typography.subtitle1,
 				fontWeight = FontWeight.Bold,
 				modifier = Modifier
 					.align(Alignment.CenterHorizontally)
-
 			)
 			Surface(
 				modifier = Modifier
@@ -174,7 +172,7 @@ fun MainContent(data: Weather) {
 						.padding(2.dp)
 						.background(MaterialTheme.colors.primary),
 					contentPadding = PaddingValues(1.dp)
-				){
+				) {
 					items(items = data.list) { item: WeatherItem ->
 						WeatherDetailRow(weather = item)
 					}
@@ -184,15 +182,13 @@ fun MainContent(data: Weather) {
 	}
 }
 
-
 @Composable
 fun WeatherDetailRow(weather: WeatherItem) {
 	val imageUrl = "https://openweathermap.org/img/wn/${weather.weather[0].icon}.png"
 	Surface(
 		Modifier
-			.padding(12.dp)
+			.padding(4.dp)
 			.fillMaxWidth(),
-
 		shape = RoundedCornerShape(16.dp),
 		color = Color.White,
 		elevation = 6.dp
@@ -204,28 +200,15 @@ fun WeatherDetailRow(weather: WeatherItem) {
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.SpaceBetween
 		) {
+
+
 			Text(
-				formatDate(weather.dt)
-					.split(",")[0],
+				formatDate(weather.dt),
+					//.split(",")[0],
 				modifier = Modifier.padding(start = 5.dp)
 			)
-//			Text(
-//				formatDecimals(weather.dt_txt.toDouble())
-//				.split(" ")[1],
-//				modifier = Modifier.padding(start = 5.dp) )
-			WeatherStateImageSmall(imageUrl = imageUrl)
-			Surface(
-				modifier = Modifier.padding(0.dp),
-				shape = CircleShape,
-				color = Color.Transparent
-			) {
-				Text(
-					weather.weather[0].description,
-					modifier = Modifier.padding(4.dp),
-					style = MaterialTheme.typography.caption
-				)
 
-			}
+			WeatherStateImageSmall(imageUrl = imageUrl)
 			Text(text = buildAnnotatedString {
 				withStyle(
 					style = SpanStyle(
@@ -234,7 +217,6 @@ fun WeatherDetailRow(weather: WeatherItem) {
 					)
 				) {
 					append(formatDecimals(weather.main.temp_max) + "º")
-
 				}
 				withStyle(
 					style = SpanStyle(
@@ -244,6 +226,12 @@ fun WeatherDetailRow(weather: WeatherItem) {
 					append(formatDecimals(weather.main.temp_min) + "º")
 				}
 			})
+
+			Text(
+				weather.weather[0].description,
+				modifier = Modifier.padding(4.dp),
+				style = MaterialTheme.typography.caption
+			)
 
 		}
 

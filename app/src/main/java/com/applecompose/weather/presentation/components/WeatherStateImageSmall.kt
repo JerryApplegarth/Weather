@@ -13,6 +13,6 @@ fun WeatherStateImageSmall(imageUrl: String) {
 		painter = rememberImagePainter(imageUrl),
 		contentDescription = "image icon",
 		modifier = Modifier
-			.size(60.dp)
+			.size(50.dp)
 	)
 }
