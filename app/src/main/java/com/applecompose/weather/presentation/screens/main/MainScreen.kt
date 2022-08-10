@@ -173,7 +173,9 @@ fun MainContent(data: Weather) {
 						.background(MaterialTheme.colors.primary),
 					contentPadding = PaddingValues(1.dp)
 				) {
+
 					items(items = data.list) { item: WeatherItem ->
+
 						WeatherDetailRow(weather = item)
 					}
 				}
@@ -193,6 +195,7 @@ fun WeatherDetailRow(weather: WeatherItem) {
 		color = Color.White,
 		elevation = 6.dp
 	) {
+
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -201,10 +204,14 @@ fun WeatherDetailRow(weather: WeatherItem) {
 			horizontalArrangement = Arrangement.SpaceBetween
 		) {
 
-
 			Text(
-				formatDate(weather.dt),
-					//.split(",")[0],
+				formatDate(weather.dt)
+					.split(",")[0],
+				modifier = Modifier.padding(start = 5.dp)
+			)
+			Text(
+				weather.dt_txt
+					.split("-")[2],
 				modifier = Modifier.padding(start = 5.dp)
 			)
 
