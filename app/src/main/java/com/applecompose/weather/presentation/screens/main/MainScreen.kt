@@ -4,21 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -26,12 +19,10 @@ import com.applecompose.weather.data.DataOrException
 import com.applecompose.weather.data.model.Weather
 import com.applecompose.weather.data.model.WeatherItem
 import com.applecompose.weather.presentation.components.HumidityWindPressureRow
-import com.applecompose.weather.presentation.components.WeatherAppBar
+import com.applecompose.weather.presentation.components.MainScaffold
+import com.applecompose.weather.presentation.components.WeatherDetailRow
 import com.applecompose.weather.presentation.components.WeatherStateImage
-import com.applecompose.weather.presentation.components.WeatherStateImageSmall
 import com.applecompose.weather.presentation.utils.formatDate
-import com.applecompose.weather.presentation.utils.formatDateTime
-import com.applecompose.weather.presentation.utils.formatDateTimeTwo
 import com.applecompose.weather.presentation.utils.formatDecimals
 
 @Composable
@@ -57,27 +48,6 @@ fun MainScreen(
 		}
 	}
 }
-
-@Composable
-fun MainScaffold(
-	weather: Weather,
-	navController: NavController
-) {
-	val context = LocalContext.current
-
-	Scaffold(topBar = {
-		WeatherAppBar(
-			title = weather.city.name,
-			navController = NavController(context),
-			elevation = 6.dp,
-
-			)
-	}) {
-		MainContent(data = weather)
-
-	}
-}
-
 @Composable
 fun MainContent(data: Weather) {
 	val weatherItem = data.list[0]
@@ -182,69 +152,6 @@ fun MainContent(data: Weather) {
 			}
 		}
 	}
-}
-
-@Composable
-fun WeatherDetailRow(weather: WeatherItem) {
-	val imageUrl = "https://openweathermap.org/img/wn/${weather.weather[0].icon}.png"
-	Surface(
-		Modifier
-			.padding(4.dp)
-			.fillMaxWidth(),
-		shape = RoundedCornerShape(16.dp),
-		color = Color.White,
-		elevation = 6.dp
-	) {
-
-		Row(
-			modifier = Modifier
-				.fillMaxWidth()
-				.background(Color.White),
-			verticalAlignment = Alignment.CenterVertically,
-			horizontalArrangement = Arrangement.SpaceBetween
-		) {
-
-			Text(
-				formatDate(weather.dt)
-					.split(",")[0],
-				modifier = Modifier.padding(start = 5.dp)
-			)
-			Text(
-				weather.dt_txt
-					.split("-")[2],
-				modifier = Modifier.padding(start = 5.dp)
-			)
-
-			WeatherStateImageSmall(imageUrl = imageUrl)
-			Text(text = buildAnnotatedString {
-				withStyle(
-					style = SpanStyle(
-						color = Color.Blue.copy(alpha = 0.7f),
-						fontWeight = FontWeight.SemiBold
-					)
-				) {
-					append(formatDecimals(weather.main.temp_max) + "º")
-				}
-				withStyle(
-					style = SpanStyle(
-						color = Color.LightGray
-					)
-				) {
-					append(formatDecimals(weather.main.temp_min) + "º")
-				}
-			})
-
-			Text(
-				weather.weather[0].description,
-				modifier = Modifier.padding(4.dp),
-				style = MaterialTheme.typography.caption
-			)
-
-		}
-
-
-	}
-
 }
 
 

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.applecompose.weather.navigation.screen.Screen
 
 @Composable
 fun WeatherAppBar(
@@ -42,7 +43,9 @@ fun WeatherAppBar(
 		},
 		actions = {
 				  if (isMainScreen){
-					  IconButton(onClick = { /*TODO*/ }) {
+					  IconButton(onClick = {
+						 onAddActionClicked.invoke()
+					  }) {
 						  Icon(
 							  imageVector = Icons.Default.Search,
 							  contentDescription = "Search Icon")
