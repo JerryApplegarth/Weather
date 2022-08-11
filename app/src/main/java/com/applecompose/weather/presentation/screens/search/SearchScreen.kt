@@ -1,5 +1,7 @@
 package com.applecompose.weather.presentation.screens.search
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,33 +19,41 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.applecompose.weather.navigation.screen.Screen
 import com.applecompose.weather.presentation.components.WeatherAppBar
 
+//@ExperimentalComposeUiApi
 @Composable
 fun SearchScreen(navController: NavController) {
 	Scaffold(topBar = {
 		WeatherAppBar(
 			title = "Search",
-			icon = Icons.Default.ArrowBack,
-
 			navController = navController,
+			icon = Icons.Default.ArrowBack,
 			isMainScreen = false,
-			){
+		){
 			navController.popBackStack()
 		}
 	}) {
 		Surface() {
-			Column(
-				verticalArrangement = Arrangement.Center,
-				horizontalAlignment = Alignment.CenterHorizontally
-			) {
+			Column(verticalArrangement = Arrangement.Center,
+				horizontalAlignment = Alignment.CenterHorizontally) {
+				SearchBar(modifier = Modifier
+					.fillMaxWidth()
+					.padding(16.dp)
+					.align(Alignment.CenterHorizontally)){ mCity ->
+					navController.navigate(Screen.MainScreen.route)
+
+				}
 
 
 
@@ -52,29 +62,33 @@ fun SearchScreen(navController: NavController) {
 		}
 
 	}
+
 }
 
+//@ExperimentalComposeUiApi
 @Composable
 fun SearchBar(
-	onSearch: (String) -> Unit = {}
-) {
-	val searchQueryState = rememberSaveable{ mutableStateOf("") }
-	val focusManager = LocalFocusManager.current
-	val valid = remember(searchQueryState.value) {
+	modifier: Modifier = Modifier,
+	onSearch: (String) -> Unit = {}) {
+	val searchQueryState = rememberSaveable { mutableStateOf("") }
+	val focusManage = LocalFocusManager.current
+	//val keyboardController = LocalSoftwareKeyboardController.current
+	val valid = remember(searchQueryState.value){
 		searchQueryState.value.trim().isNotEmpty()
 	}
-	Column() {
+
+	Column {
 		CommonTextField(
 			valueState = searchQueryState,
 			placeholder = "Seattle",
 			onAction = KeyboardActions {
-
-			}
-
-		)
-		
+				if (!valid) return@KeyboardActions
+				onSearch(searchQueryState.value.trim())
+				searchQueryState.value = ""
+				//keyboardController?.hide()
+				focusManage.clearFocus()
+			})
 	}
-
 }
 
 @Composable
@@ -94,10 +108,11 @@ fun CommonTextField(valueState: MutableState<String>,
 		colors = TextFieldDefaults.outlinedTextFieldColors(
 			focusedBorderColor = Color.Blue,
 			cursorColor = Color.Black),
-		shape = RoundedCornerShape(16.dp),
+		shape = RoundedCornerShape(15.dp),
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(start = 12.dp, end = 12.dp))
+			.padding(start = 10.dp, end = 10.dp))
 
 
 }
+
