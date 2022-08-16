@@ -12,13 +12,18 @@ import com.applecompose.weather.presentation.screens.main.MainScreen
 import com.applecompose.weather.presentation.screens.main.MainViewModel
 import com.applecompose.weather.presentation.screens.search.SearchScreen
 import com.applecompose.weather.presentation.screens.settings.SettingsScreen
+import com.applecompose.weather.presentation.screens.splash.SplashScreen
 
 @Composable
 fun Navigation() {
 	val navController = rememberNavController()
 	NavHost(
 		navController = navController,
-		startDestination = Screen.MainScreen.route) {
+		startDestination = Screen.SplashScreen.route) {
+
+		composable(Screen.SplashScreen.route) {
+			SplashScreen(navController = navController)
+		}
 
 		composable(Screen.MainScreen.route) {
 			val mainViewModel = hiltViewModel<MainViewModel>()
