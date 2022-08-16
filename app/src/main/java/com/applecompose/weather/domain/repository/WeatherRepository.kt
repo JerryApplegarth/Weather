@@ -10,7 +10,7 @@ class WeatherRepository @Inject constructor(
 ) {
 	suspend fun getWeather(cityQuery: String): DataOrException<Weather, Boolean, Exception> {
 		val response = try {
-			api.getWeather(cityQuery)
+			api.getWeather()
 
 		}catch (e: Exception) {
 			return DataOrException(e = e)
