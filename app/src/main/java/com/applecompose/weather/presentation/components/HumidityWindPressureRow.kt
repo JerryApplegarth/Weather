@@ -40,7 +40,7 @@ fun HumidityWindPressureRow(weather: WeatherItem) {
 				modifier = Modifier
 					.size(20.dp)
 			)
-			Text(text = " ${weather.wind.speed}mph")
+			Text(text = " ${weather.wind.speed.toInt()} mph")
 		}
 		Row() {
 			Icon(

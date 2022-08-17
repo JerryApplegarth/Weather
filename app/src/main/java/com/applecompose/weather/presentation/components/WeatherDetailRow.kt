@@ -47,9 +47,11 @@ fun WeatherDetailRow(weather: WeatherItem) {
 					.split(",")[0],
 				modifier = Modifier.padding(start = 5.dp)
 			)
+			//val newDate = weather.dt_txt + 3
 			Text(
 				weather.dt_txt
-					.split("-")[2],
+					.split(":")[0],
+
 				modifier = Modifier.padding(start = 5.dp)
 			)
 
@@ -57,7 +59,7 @@ fun WeatherDetailRow(weather: WeatherItem) {
 			Text(text = buildAnnotatedString {
 				withStyle(
 					style = SpanStyle(
-						color = Color.Blue.copy(alpha = 0.7f),
+						color = MaterialTheme.colors.primary.copy(alpha = 0.7f),
 						fontWeight = FontWeight.SemiBold
 					)
 				) {
@@ -65,7 +67,7 @@ fun WeatherDetailRow(weather: WeatherItem) {
 				}
 				withStyle(
 					style = SpanStyle(
-						color = Color.LightGray
+						color = MaterialTheme.colors.secondary
 					)
 				) {
 					append(formatDecimals(weather.main.temp_min) + "º")

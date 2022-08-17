@@ -1,7 +1,6 @@
 package com.applecompose.weather.data.model
 
-
-class WeatherItem(
+data class WeatherItem(
 	val clouds: Clouds,
 	val dt: Int,
 	val dt_txt: String,

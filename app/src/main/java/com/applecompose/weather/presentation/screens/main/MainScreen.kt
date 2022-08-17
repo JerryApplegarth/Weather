@@ -123,7 +123,7 @@ fun MainContent(data: Weather) {
 				thickness = 2.dp
 			)
 			Text(
-				text = "Daily Forecast",
+				text = "Hourly Forecast Every 4 Hours",
 				style = MaterialTheme.typography.subtitle1,
 				fontWeight = FontWeight.Bold,
 				modifier = Modifier
