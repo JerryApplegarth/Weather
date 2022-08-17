@@ -33,7 +33,6 @@ fun WeatherDetailRow(weather: WeatherItem) {
 		color = Color.White,
 		elevation = 6.dp
 	) {
-
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -41,18 +40,15 @@ fun WeatherDetailRow(weather: WeatherItem) {
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.SpaceBetween
 		) {
-
 			Text(
 				formatDate(weather.dt)
-					.split(",")[0],
+					.split(" ")[1],
 				modifier = Modifier.padding(start = 5.dp)
 			)
-			//val newDate = weather.dt_txt + 3
+
 			Text(
 				weather.dt_txt
-					.split(":")[0],
-
-
+					.split("-")[2],
 				modifier = Modifier.padding(start = 5.dp)
 			)
 
