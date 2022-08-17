@@ -14,8 +14,6 @@ fun MainScaffold(
 	navController: NavController,
 	isImperial: Boolean = true
 ) {
-
-
 	Scaffold(topBar = {
 		WeatherAppBar(
 			title = weather.city.name,
@@ -23,9 +21,7 @@ fun MainScaffold(
 			onAddActionClicked = {
 				navController.navigate(Screen.SearchScreen.route)
 			},
-
 			elevation = 6.dp,
-
 			)
 	}) {
 		MainContent(data = weather)

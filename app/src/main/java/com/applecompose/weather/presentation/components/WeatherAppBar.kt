@@ -63,9 +63,10 @@ fun WeatherAppBar(
 		navigationIcon = {
 						 if (icon != null) {
 							 Icon(
+
 								 imageVector = Icons.Default.ArrowBack,
 								 contentDescription = "Arrow Back Icon",
-							    tint = MaterialTheme.colors.onSecondary,
+							     tint = MaterialTheme.colors.onSecondary,
 								 modifier = Modifier
 									 .clickable {
 										 onButtonClicked.invoke()

@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 interface WeatherApi {
-	@GET(value = "data/2.5/forecast?lat=43.23&lon=-123.32&exclude=minutely,hourly,&appid=0591da9bc5afc7d4ba5f0232b164cb3f&units=imperial")
+	@GET(value = "data/2.5/forecast?lat=43.23&lon=-123.32&exclude=minutely,hourly,daily&appid=0591da9bc5afc7d4ba5f0232b164cb3f&units=imperial")
 	suspend fun getWeather(
 		@Query(value = "city") name: String = "Portland",
 		@Query(value = "units") units: String = "imperial",

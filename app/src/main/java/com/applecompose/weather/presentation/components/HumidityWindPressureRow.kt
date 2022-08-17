@@ -49,7 +49,7 @@ fun HumidityWindPressureRow(weather: WeatherItem) {
 				modifier = Modifier
 					.size(20.dp)
 			)
-			Text(text = " ${weather.wind.deg} degree")
+			Text(text = " ${weather.wind.deg} °")
 		}
 
 

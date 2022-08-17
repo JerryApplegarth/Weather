@@ -70,7 +70,7 @@ fun MainContent(data: Weather) {
 					.padding(start = 12.dp, end = 12.dp),
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
-				Text(text = "Weather App")
+				Text(text = "Weather App ${data.city.name}")
 				Text(text = formatDate(weatherItem.dt))
 			}
 			Spacer(modifier = Modifier.height(20.dp))

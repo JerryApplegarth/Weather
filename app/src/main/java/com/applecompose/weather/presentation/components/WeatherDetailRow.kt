@@ -52,6 +52,7 @@ fun WeatherDetailRow(weather: WeatherItem) {
 				weather.dt_txt
 					.split(":")[0],
 
+
 				modifier = Modifier.padding(start = 5.dp)
 			)
 
